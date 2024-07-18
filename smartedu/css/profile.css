@@ -1,0 +1,91 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    background: #fbeef0; /* Light pink background */
+}
+
+input,
+button,
+select,
+textarea {
+    border: none;
+    outline: none;
+    background: none;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+}
+
+.cont {
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    width: 900px;
+    margin: 0 auto;
+    background: #f7b8c5; /* Soft pink background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 50px;
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+    width: 260px;
+    height: 36px;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    background: #f28abe; /* Darker pink background for the button */
+    text-transform: uppercase;
+}
+
+label {
+    display: block;
+    width: 100%;
+    margin: 15px 0;
+    text-align: left;
+    font-size: 16px;
+    color: #d8476c; /* Medium pink color */
+    text-transform: uppercase;
+}
+
+input,
+select,
+textarea {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    background: #fff;
+}
+
+input[type="file"] {
+    padding: 5px;
+}
+
+textarea {
+    resize: vertical; /* Allows users to adjust height of the textarea */
+}
+
+button:hover {
+    background: #ec5d8f; /* Slightly lighter pink on hover */
+}
+
+.home-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+    background: #f28abe; /* Darker pink background for the link */
+}
