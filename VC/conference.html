@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference</title>
+</head>
+<body>
+    <h1>Conference Room</h1>
+    <div id="videoContainer"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/simple-peer/simplepeer.min.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+const username = urlParams.get('username');
+const room = urlParams.get('room');
+
+if (!username || !room) {
+    alert('Username or room not provided!');
+    window.location.href = '/';
+} else {
+    const socket = io();
+
+    const videoContainer = document.getElementById('videoContainer');
+    const myVideo = document.createElement('video');
+    myVideo.muted = true;
+    videoContainer.appendChild(myVideo);
+
+    const myLabel = document.createElement('div');
+    myLabel.innerText = username;
+    videoContainer.appendChild(myLabel);
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+        myVideo.srcObject = stream;
+        myVideo.play();
+
+        const peers = {};
+
+        socket.emit('join', { username, room });
+
+        socket.on('user-joined', (user) => {
+            if (user.id === socket.id) return;
+
+            const peer = new SimplePeer({
+                initiator: true,
+                trickle: false,
+                stream: stream
+            });
+
+            peer.on('signal', data => {
+                socket.emit('signal', { userId: user.id, signal: data });
+            });
+
+            peer.on('stream', userStream => {
+                const userVideo = document.createElement('video');
+                userVideo.srcObject = userStream;
+                userVideo.play();
+                userVideo.id = user.id;
+
+                const userLabel = document.createElement('div');
+                userLabel.innerText = user.username;
+
+                const userContainer = document.createElement('div');
+                userContainer.appendChild(userVideo);
+                userContainer.appendChild(userLabel);
+
+                videoContainer.appendChild(userContainer);
+            });
+
+            peers[user.id] = peer;
+        });
+
+        socket.on('signal', data => {
+            const peer = peers[data.userId] || new SimplePeer({
+                initiator: false,
+                trickle: false,
+                stream: stream
+            });
+
+            peer.on('signal', signal => {
+                socket.emit('signal', { userId: data.userId, signal });
+            });
+
+            peer.on('stream', userStream => {
+                const userVideo = document.getElementById(data.userId) || document.createElement('video');
+                userVideo.srcObject = userStream;
+                userVideo.play();
+                userVideo.id = data.userId;
+
+                const userLabel = document.createElement('div');
+                userLabel.innerText = data.username;
+
+                const userContainer = document.createElement('div');
+                userContainer.appendChild(userVideo);
+                userContainer.appendChild(userLabel);
+
+                if (!document.getElementById(data.userId)) {
+                    videoContainer.appendChild(userContainer);
+                }
+            });
+
+            peer.signal(data.signal);
+            peers[data.userId] = peer;
+        });
+
+        socket.on('user-left', userId => {
+            if (peers[userId]) {
+                peers[userId].destroy();
+                delete peers[userId];
+            }
+
+            const userVideo = document.getElementById(userId);
+            if (userVideo) {
+                userVideo.remove();
+            }
+        });
+    }).catch(error => {
+        alert('Error accessing media devices!');
+        console.error(error);
+    });
+}
+
+    </script>
+</body>
+</html>
