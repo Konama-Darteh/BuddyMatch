@@ -115,8 +115,18 @@
             <option value="Software Engineering">Software Engineering</option>
             <option value="Intro to AI">Intro to AI</option>
         </select>
+
         <label for="major">Major</label>
         <input type="text" id="major" placeholder="Enter major">
+
+        <label for="yearGroup">Year Group</label>
+        <select id="yearGroup">
+            <option value="">Select Year Group</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+        </select>
         
         <label for="timeToStudy">Hours to Study</label>
         <input type="number" id="timeToStudy" placeholder="Enter hours willing to study">
@@ -139,23 +149,23 @@
 
     <script>
         const existingUsers = [
-            ['Sindhu', ['Computer science', 'Precalculus 1', 'Calculus 1', 'Data Structures'], 2.5, 3],
-            ['Tejal', ['IMS', 'Precalculus 2', 'Applied Calculus', 'Research Methods'], 3, 4],
-            ['Rhea', ['IMS', 'Calculus 1', 'Data Structures'], 4.5, 3],
-            ['John', ['Computer science', 'Python', 'OOP'], 6, 2],
-            ['Anushka', ['Computer Engineering', 'Engineering Calculus', 'Software Engineering'], 7, 4],
-            ['Stacy', ['IMS', 'WebTech', 'Research Methods'], 3, 3],
-            ['James', ['Computer science', 'Calculus 2', 'Hardware'], 5, 2],
-            ['Amaya', ['Computer science', 'COA', 'Intro to AI'], 5.5, 3],
-            ['Saharya', ['Computer science', 'Data Structures', 'Algorithms'], 6, 3],
-            ['Bob', ['IMS', 'Python', 'WebTech'], 5, 2],
-            ['Dylan', ['IMS', 'OOP', 'Applied Calculus'], 7, 3],
-            ['Thomas', ['BA', 'Precalculus 1', 'Precalculus 2'], 8, 3],
-            ['Mike', ['Engineering', 'Calculus', 'Python'], 4, 2],
-            ['Gamaya', ['Software Engineering', 'Intro to AI'], 6, 3],
-            ['Lizzie', ['COA', 'WebTech'], 6, 3],
-            ['Tara', ['Precalculus 1', 'Algorithms'], 3.5, 3],
-            ['Kelsie', ['Precalculus 2', 'Research Methods'], 4, 3]
+            ['Sindhu', ['2024', 'Computer science', 'Precalculus 1', 'Calculus 1', 'Data Structures'], 2.5, 3],
+            ['Tejal', ['2025', 'IMS', 'Precalculus 2', 'Applied Calculus', 'Research Methods'], 3, 4],
+            ['Rhea', ['2026', 'IMS', 'Calculus 1', 'Data Structures'], 4.5, 3],
+            ['John', ['2024', 'Computer science', 'Python', 'OOP'], 6, 2],
+            ['Anushka', ['2027', 'Computer Engineering', 'Engineering Calculus', 'Software Engineering'], 7, 4],
+            ['Stacy', ['2025', 'IMS', 'WebTech', 'Research Methods'], 3, 3],
+            ['James', ['2026', 'Computer science', 'Calculus 2', 'Hardware'], 5, 2],
+            ['Amaya', ['2027', 'Computer science', 'COA', 'Intro to AI'], 5.5, 3],
+            ['Saharya', ['2024', 'Computer science', 'Data Structures', 'Algorithms'], 6, 3],
+            ['Bob', ['2025', 'IMS', 'Python', 'WebTech'], 5, 2],
+            ['Dylan', ['2026', 'IMS', 'OOP', 'Applied Calculus'], 7, 3],
+            ['Thomas', ['2027', 'BA', 'Precalculus 1', 'Precalculus 2'], 8, 3],
+            ['Mike', ['2024', 'Engineering', 'Calculus', 'Python'], 4, 2],
+            ['Gamaya', ['2025', 'Software Engineering', 'Intro to AI'], 6, 3],
+            ['Lizzie', ['2026', 'COA', 'WebTech'], 6, 3],
+            ['Tara', ['2027', 'Precalculus 1', 'Algorithms'], 3.5, 3],
+            ['Kelsie', ['2024', 'Precalculus 2', 'Research Methods'], 4, 3]
         ];
 
         function validateInput(value, regex, errorMessage) {
@@ -172,30 +182,29 @@
             const major = document.getElementById('major').value;
             const timeToStudy = document.getElementById('timeToStudy').value;
             const stressed = document.getElementById('stressed').value;
+            const yearGroup = document.getElementById('yearGroup').value;
 
+            // Validate inputs
             if (!validateInput(studentName, /^[A-Za-z\s]+$/, "Please enter a valid name.")) return;
             if (!validateInput(major, /^[A-Za-z\s]+$/, "Please enter a valid major.")) return;
             if (!validateInput(timeToStudy, /^\d+$/, "Please enter a valid number for hours to study.")) return;
             if (!validateInput(stressed, /^[0-5]$/, "Please enter a stress level between 0 and 5.")) return;
+            if (!validateInput(yearGroup, /^\d{4}$/, "Please select a valid year group.")) return;
 
             const timeToStudyNum = parseFloat(timeToStudy);
             const stressedNum = parseInt(stressed);
 
-            let potentialStudyBuddies = [];
-            for (let i = 0; i < existingUsers.length; i++) {
-                if (existingUsers[i][1].includes(courseName)) {
-                    potentialStudyBuddies.push(existingUsers[i]);
-                }
-            }
+            // Filter potential buddies based on course and year group
+            let potentialStudyBuddies = existingUsers.filter(user => user[1].includes(courseName) && user[1].includes(yearGroup));
 
             if (potentialStudyBuddies.length === 0) {
-                alert("No study buddies are taking this course");
+                alert("No study buddies are taking this course or from the selected year group.");
                 return;
             }
 
+            // Calculate scores and find the best matches
             let finalProspects = [];
             let scoreList = [];
-
             for (let k = 0; k < potentialStudyBuddies.length; k++) {
                 let timeDiff = Math.abs(timeToStudyNum - potentialStudyBuddies[k][2]);
                 let stressDiff = Math.abs(stressedNum - potentialStudyBuddies[k][3]);
@@ -204,7 +213,6 @@
             }
 
             scoreList.sort((a, b) => b[1] - a[1]);
-
             for (let i = 0; i < scoreList.length; i++) {
                 for (let j = 0; j < potentialStudyBuddies.length; j++) {
                     if (scoreList[i][0] === potentialStudyBuddies[j][0]) {
@@ -225,8 +233,9 @@
                 const resultDiv = document.createElement('div');
                 resultDiv.className = 'result';
                 resultDiv.innerHTML = `<strong>Name:</strong> ${buddy[0]}<br>
-                                       <strong>Major:</strong> ${buddy[1][0]}<br>
-                                       <strong>Courses:</strong> ${buddy[1].slice(1).join(', ')}<br>
+                                       <strong>Year Group:</strong> ${buddy[1][0]}<br>
+                                       <strong>Major:</strong> ${buddy[1][1]}<br>
+                                       <strong>Courses:</strong> ${buddy[1].slice(2).join(', ')}<br>
                                        <strong>Hours to Study:</strong> ${buddy[2]}<br>
                                        <strong>Stress Level:</strong> ${buddy[3]}`;
                 resultsContainer.appendChild(resultDiv);
