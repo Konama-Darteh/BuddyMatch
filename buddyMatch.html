@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Study Buddy Match</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: hsl(340, 80%, 94%);
+            color: #880e4f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #f8bbd0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 700px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background: #d81b60;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #ad1457;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            background: #f48fb1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .result {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f06292;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        .success-box {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success-box i {
+            font-size: 24px;
+            color: #3c763d;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Study Buddy Finder</h1>
+        <label for="studentName">Your Name</label>
+        <input type="text" id="studentName" placeholder="Enter your name">
+        
+        <label for="courseName">Course Name</label>
+        <select id="courseName">
+            <option value="Precalculus 1">Precalculus 1</option>
+            <option value="Precalculus 2">Precalculus 2</option>
+            <option value="Calculus 1">Calculus 1</option>
+            <option value="Calculus 2">Calculus 2</option>
+            <option value="Applied Calculus">Applied Calculus</option>
+            <option value="Engineering Calculus">Engineering Calculus</option>
+            <option value="Python">Python</option>
+            <option value="OOP">OOP</option>
+            <option value="Data Structures">Data Structures</option>
+            <option value="Algorithms">Algorithms</option>
+            <option value="WebTech">WebTech</option>
+            <option value="Research Methods">Research Methods</option>
+            <option value="Hardware">Hardware</option>
+            <option value="COA">COA</option>
+            <option value="Software Engineering">Software Engineering</option>
+            <option value="Intro to AI">Intro to AI</option>
+        </select>
+        <label for="major">Major</label>
+        <input type="text" id="major" placeholder="Enter major">
+        
+        <label for="timeToStudy">Hours to Study</label>
+        <input type="number" id="timeToStudy" placeholder="Enter hours willing to study">
+        
+        <label for="stressed">Stress Level (0-5)</label>
+        <input type="number" id="stressed" placeholder="Enter stress level" min="0" max="5">
+        
+        <button onclick="findStudyBuddy()">Find Study Buddy</button>
+        
+        <div class="result-container" id="result-container" style="display: none;">
+            <h2>Matching Buddies:</h2>
+            <div id="results"></div>
+        </div>
+
+        <div class="success-box" id="success-box">
+            <i>&#10003;</i>
+            <p id="success-message"></p>
+        </div>
+    </div>
+
+    <script>
+        const existingUsers = [
+            ['Sindhu', ['Computer science', 'Precalculus 1', 'Calculus 1', 'Data Structures'], 2.5, 3],
+            ['Tejal', ['IMS', 'Precalculus 2', 'Applied Calculus', 'Research Methods'], 3, 4],
+            ['Rhea', ['IMS', 'Calculus 1', 'Data Structures'], 4.5, 3],
+            ['John', ['Computer science', 'Python', 'OOP'], 6, 2],
+            ['Anushka', ['Computer Engineering', 'Engineering Calculus', 'Software Engineering'], 7, 4],
+            ['Stacy', ['IMS', 'WebTech', 'Research Methods'], 3, 3],
+            ['James', ['Computer science', 'Calculus 2', 'Hardware'], 5, 2],
+            ['Amaya', ['Computer science', 'COA', 'Intro to AI'], 5.5, 3],
+            ['Saharya', ['Computer science', 'Data Structures', 'Algorithms'], 6, 3],
+            ['Bob', ['IMS', 'Python', 'WebTech'], 5, 2],
+            ['Dylan', ['IMS', 'OOP', 'Applied Calculus'], 7, 3],
+            ['Thomas', ['BA', 'Precalculus 1', 'Precalculus 2'], 8, 3],
+            ['Mike', ['Engineering', 'Calculus', 'Python'], 4, 2],
+            ['Gamaya', ['Software Engineering', 'Intro to AI'], 6, 3],
+            ['Lizzie', ['COA', 'WebTech'], 6, 3],
+            ['Tara', ['Precalculus 1', 'Algorithms'], 3.5, 3],
+            ['Kelsie', ['Precalculus 2', 'Research Methods'], 4, 3]
+        ];
+
+        function validateInput(value, regex, errorMessage) {
+            if (!regex.test(value)) {
+                alert(errorMessage);
+                return false;
+            }
+            return true;
+        }
+
+        function findStudyBuddy() {
+            const studentName = document.getElementById('studentName').value;
+            const courseName = document.getElementById('courseName').value;
+            const major = document.getElementById('major').value;
+            const timeToStudy = document.getElementById('timeToStudy').value;
+            const stressed = document.getElementById('stressed').value;
+
+            if (!validateInput(studentName, /^[A-Za-z\s]+$/, "Please enter a valid name.")) return;
+            if (!validateInput(major, /^[A-Za-z\s]+$/, "Please enter a valid major.")) return;
+            if (!validateInput(timeToStudy, /^\d+$/, "Please enter a valid number for hours to study.")) return;
+            if (!validateInput(stressed, /^[0-5]$/, "Please enter a stress level between 0 and 5.")) return;
+
+            const timeToStudyNum = parseFloat(timeToStudy);
+            const stressedNum = parseInt(stressed);
+
+            let potentialStudyBuddies = [];
+            for (let i = 0; i < existingUsers.length; i++) {
+                if (existingUsers[i][1].includes(courseName)) {
+                    potentialStudyBuddies.push(existingUsers[i]);
+                }
+            }
+
+            if (potentialStudyBuddies.length === 0) {
+                alert("No study buddies are taking this course");
+                return;
+            }
+
+            let finalProspects = [];
+            let scoreList = [];
+
+            for (let k = 0; k < potentialStudyBuddies.length; k++) {
+                let timeDiff = Math.abs(timeToStudyNum - potentialStudyBuddies[k][2]);
+                let stressDiff = Math.abs(stressedNum - potentialStudyBuddies[k][3]);
+                let score = (1 - timeDiff / 10) * 0.5 + (1 - stressDiff / 5) * 0.5;
+                scoreList.push([potentialStudyBuddies[k][0], score]);
+            }
+
+            scoreList.sort((a, b) => b[1] - a[1]);
+
+            for (let i = 0; i < scoreList.length; i++) {
+                for (let j = 0; j < potentialStudyBuddies.length; j++) {
+                    if (scoreList[i][0] === potentialStudyBuddies[j][0]) {
+                        finalProspects.push(potentialStudyBuddies[j]);
+                    }
+                }
+            }
+
+            displayResults(finalProspects);
+            document.getElementById('success-message').innerText = `${studentName}, you have successfully found a match!`;
+            document.getElementById('success-box').style.display = 'block';
+        }
+
+        function displayResults(finalProspects) {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+            finalProspects.forEach(buddy => {
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'result';
+                resultDiv.innerHTML = `<strong>Name:</strong> ${buddy[0]}<br>
+                                       <strong>Major:</strong> ${buddy[1][0]}<br>
+                                       <strong>Courses:</strong> ${buddy[1].slice(1).join(', ')}<br>
+                                       <strong>Hours to Study:</strong> ${buddy[2]}<br>
+                                       <strong>Stress Level:</strong> ${buddy[3]}`;
+                resultsContainer.appendChild(resultDiv);
+            });
+            document.getElementById('result-container').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
