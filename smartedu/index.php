@@ -57,7 +57,7 @@
 	<header class="top-navbar">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="index.html">
+				<a class="navbar-brand" href="index.php">
 					<img src="images/logo.png" alt="" />
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,29 +67,29 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+						<li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
 						<li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-						<li class="nav-item"><a class="nav-link" href="./html/chat.html">Chat</a></li>
+						<li class="nav-item"><a class="nav-link" href="./html/chat.php">Chat</a></li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">People </a>
+							<a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Match </a>
 							<div class="dropdown-menu" aria-labelledby="dropdown-a">
-								<a class="dropdown-item" href="course-grid-2.html">Students </a>
-								<a class="dropdown-item" href="course-grid-3.html">FIs</a>
-								<a class="dropdown-item" href="course-grid-4.html">Student Tutors</a>
+								<a class="dropdown-item" href="./html/matching.php">Students </a>
+								<a class="dropdown-item" href="./html/matchFI.php">FIs</a>
+								<a class="dropdown-item" href="./html/matchFI.php">Student Tutors</a>
 								
 							</div>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="./html/profile.html" id="dropdown-a" data-toggle="dropdown">your profile </a>
+							<a class="nav-link dropdown-toggle" href="./html/profile.php" id="dropdown-a" data-toggle="dropdown">your profile </a>
 							<div class="dropdown-menu" aria-labelledby="dropdown-a">
-								<a class="dropdown-item" href="./html/profile.html">profile </a>
+								<a class="dropdown-item" href="./html/profile.php">profile </a>
 								<!--<a class="dropdown-item" href="blog-single.html">Blog single </a> -->
 							</div>
-						</li>
+						</li>  
 						
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-                        <li><a class="hover-btn-new log orange" href="#" data-toggle="modal" data-target="#login"><span>Book Now</span></a></li>
+                        <!--<li><a class="hover-btn-new log orange" href="./html/matching.html" data-toggle="modal" data-target="#""><span>Match Now</span></a></li> -->
                     </ul>
 				</div>
 			</div>
@@ -106,7 +106,7 @@
 		</ol>
 		<div class="carousel-inner" role="listbox">
 			<div class="carousel-item active">
-				<div id="home" class="first-section" style="background-image:url('images/slider-01.jpg');">
+				<div id="home" class="first-section" style="background-image:url('images/pinkbg1.jpeg');">
 					<div class="dtab">
 						<div class="container">
 							<div class="row">
@@ -114,9 +114,9 @@
 									<div class="big-tagline">
 										<h2><strong>BuddyMatch </strong> your companion through college</h2>
 										<p class="lead">With BuddyMatch, you are able to find study partners, student tutors and FIs. </p>
-											<a href="register.html" class="hover-btn-new"><span>Login</span></a>
+											<a href="./html/register.php" class="hover-btn-new"><span>Login</span></a>
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<a href="#" class="hover-btn-new"><span>Read More</span></a>
+											
 									</div>
 								</div>
 							</div><!-- end row -->            
@@ -135,7 +135,7 @@
 										<p class="lead" data-animation="animated fadeInLeft">With Landigoo responsive landing page template, you can promote your all hosting, domain and email services. </p>
                                             <a href="register.html" class="hover-btn-new"><span>Login</span></a>
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<a href="#" class="hover-btn-new"><span>Read More</span></a>
+											
 									</div>
 								</div>
 							</div><!-- end row -->            

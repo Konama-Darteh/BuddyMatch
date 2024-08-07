@@ -20,16 +20,6 @@
             </div>
         </div>
 
-        <div class="rating-section">
-            <h2>Rate Your Study Partner</h2>
-            <div class="rating">
-                <span class="star" data-value="1">1</span>
-                <span class="star" data-value="2">2</span>
-                <span class="star" data-value="3">3</span>
-                <span class="star" data-value="4">4</span>
-                <span class="star" data-value="5">5</span>
-            </div>
-        </div>
     </div>
 <script src="script.js"></script>
 </body>
